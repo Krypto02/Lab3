@@ -1,0 +1,8 @@
+[MASTER]
+extension-pkg-whitelist=torch
+
+[TYPECHECK]
+generated-members=torch.*, numpy.*
+
+[MESSAGES CONTROL]
+disable=R,C
