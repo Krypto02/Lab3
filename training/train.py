@@ -17,6 +17,8 @@ IMAGE_SIZE = 224
 EXPERIMENT_NAME = "pet-classification"
 MODEL_REGISTRY_NAME = "pet-classifier"
 
+mlflow.set_tracking_uri("file:./mlruns")
+
 
 def set_seed(seed=SEED):
     random.seed(seed)
