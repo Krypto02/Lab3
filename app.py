@@ -1,6 +1,5 @@
 """Gradio interface for Pet Breed Classification using Render API."""
 
-import os
 from io import BytesIO
 
 import gradio as gr
@@ -18,7 +17,7 @@ def get_available_classes():
         response.raise_for_status()
         data = response.json()
         return data.get("classes", [])
-    except Exception as e:
+    except requests.RequestException as e:
         print(f"Error fetching classes: {e}")
         return []
 
@@ -38,7 +37,7 @@ def predict_class(image):
         predicted_breed = result.get("predicted_breed", "Unknown")
         confidence = result.get("confidence", 0.0)
         return predicted_breed, confidence
-    except Exception as e:
+    except requests.RequestException as e:
         print(f"Error predicting: {e}")
         return "Error", 0.0
 
@@ -87,14 +86,12 @@ css = """
 
 def predict_pet_breed(image):
     """Predict pet breed from image."""
+    if image is None:
+        return "Please upload an image first"
+
     try:
-        if image is None:
-            return "Please upload an image first"
-
         predicted_breed, confidence = predict_class(image)
-
         return f"**Predicted Breed:** {predicted_breed}\n\n**Confidence:** {confidence:.2%}"
-
     except Exception as e:
         return f"Error: {str(e)}"
 

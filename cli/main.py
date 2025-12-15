@@ -6,10 +6,12 @@ from logic.image_processor import (
     resize_image,
 )
 
+
 @click.group()
 @click.version_option(version="1.0.0")
 def app():
     pass
+
 
 @app.command()
 @click.argument("image_path", type=click.Path(exists=True))
@@ -21,6 +23,7 @@ def predict(image_path):
     except Exception as e:
         click.echo(f"Error: {str(e)}", err=True)
         raise click.Abort()
+
 
 @app.command()
 @click.argument("image_path", type=click.Path(exists=True))
@@ -34,6 +37,7 @@ def resize(image_path, output_path, width, height):
     except Exception as e:
         click.echo(f"Error: {str(e)}", err=True)
         raise click.Abort()
+
 
 @app.command()
 @click.argument("image_path", type=click.Path(exists=True))

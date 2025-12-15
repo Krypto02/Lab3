@@ -8,7 +8,7 @@ def run_command(cmd, description):
     print(f"  {description}")
     print(f"{'='*60}\n")
 
-    result = subprocess.run(cmd, shell=True)
+    result = subprocess.run(cmd, shell=True, check=True)
 
     if result.returncode != 0:
         print(f"\nError: {description} failed")

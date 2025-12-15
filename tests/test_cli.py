@@ -10,13 +10,13 @@ from PIL import Image
 from cli.main import app
 
 
-@pytest.fixture
-def runner():
+@pytest.fixture(name="runner")
+def _runner():
     return CliRunner()
 
 
-@pytest.fixture
-def sample_image():
+@pytest.fixture(name="sample_image")
+def _sample_image():
     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
         img = Image.new("RGB", (100, 100), color="blue")
         img.save(tmp.name)

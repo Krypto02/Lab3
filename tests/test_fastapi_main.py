@@ -9,13 +9,13 @@ from PIL import Image
 from api.main import app
 
 
-@pytest.fixture
-def client():
+@pytest.fixture(name="client")
+def _client():
     return TestClient(app)
 
 
-@pytest.fixture
-def sample_image_bytes():
+@pytest.fixture(name="sample_image_bytes")
+def _sample_image_bytes():
     img = Image.new("RGB", (100, 100), color="green")
     img_bytes = io.BytesIO()
     img.save(img_bytes, format="JPEG")

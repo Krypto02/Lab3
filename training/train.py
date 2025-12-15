@@ -182,7 +182,7 @@ def train_model(model_name="mobilenet_v2", batch_size=32, learning_rate=0.001, n
         print("[6/8] Logging class labels artifact...")
         class_labels_dict = {"classes": class_labels}
         class_labels_path = "class_labels.json"
-        with open(class_labels_path, "w") as f:
+        with open(class_labels_path, "w", encoding="utf-8") as f:
             json.dump(class_labels_dict, f)
         mlflow.log_artifact(class_labels_path)
         os.remove(class_labels_path)

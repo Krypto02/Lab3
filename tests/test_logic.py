@@ -13,8 +13,8 @@ from logic.image_processor import (
 )
 
 
-@pytest.fixture
-def sample_image():
+@pytest.fixture(name="sample_image")
+def _sample_image():
     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
         img = Image.new("RGB", (224, 224), color="red")
         img.save(tmp.name)
@@ -22,8 +22,8 @@ def sample_image():
     os.unlink(tmp.name)
 
 
-@pytest.fixture
-def output_path():
+@pytest.fixture(name="output_path")
+def _output_path():
     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
         path = tmp.name
     yield path

@@ -71,7 +71,7 @@ def get_best_model():
         run = client.get_run(best_run_id)
         run_name = run.data.tags.get("mlflow.runName", "N/A")
 
-    print(f"\nBest model selected:")
+    print("\nBest model selected:")
     print(f"  Run ID: {best_run_id}")
     print(f"  Run Name: {run_name}")
     print(f"  Best Val Acc: {best_val_acc:.2f}%")
@@ -111,7 +111,7 @@ def export_to_onnx(run_id):
 
     print(f"Class labels downloaded to: {local_path}")
 
-    with open(local_path, "r") as f:
+    with open(local_path, "r", encoding="utf-8") as f:
         class_labels = json.load(f)
 
     print(f"Class labels saved: {len(class_labels['classes'])} classes")
