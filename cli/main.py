@@ -1,4 +1,5 @@
 import click
+
 from logic.image_processor import (
     get_available_classes,
     predict_class,

@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from typing import List
+
 import numpy as np
 import onnxruntime as ort
 from PIL import Image

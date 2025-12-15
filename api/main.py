@@ -2,10 +2,12 @@ import os
 import shutil
 import tempfile
 from pathlib import Path
+
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
+
 from logic.image_processor import (
     get_available_classes,
     predict_class,
