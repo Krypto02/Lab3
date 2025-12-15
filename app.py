@@ -102,6 +102,8 @@ def predict_pet_breed(image):
 def get_breeds_html():
     """Generate HTML for available breeds."""
     breeds = get_available_classes()
+    if not breeds:
+        return '<p style="text-align: center; padding: 1rem;">Loading breeds from API... (may take 30-60s on first load)</p>'
     badges = "".join([f'<div class="breed-badge">{breed}</div>' for breed in sorted(breeds)])
     return f'<div class="breeds-grid">{badges}</div>'
 
@@ -128,7 +130,9 @@ with gr.Blocks(title="Pet Breed Classifier", theme=gr.themes.Soft(), css=css) as
             )
 
     with gr.Accordion("Supported Breeds (37 classes)", open=False):
-        gr.HTML(get_breeds_html())
+        breeds_display = gr.HTML(value=get_breeds_html())
+        refresh_btn = gr.Button("Refresh Breeds", size="sm")
+        refresh_btn.click(fn=get_breeds_html, outputs=breeds_display)
 
     gr.Markdown(
         """
