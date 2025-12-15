@@ -1,62 +1,36 @@
-"""Image processing and prediction using ONNX Runtime."""
 
 import json
 from pathlib import Path
 from typing import List
-
 import numpy as np
 import onnxruntime as ort
 from PIL import Image
 
-# Model paths
 ONNX_MODEL_PATH = Path("models") / "pet_classifier.onnx"
 CLASS_LABELS_PATH = Path("models") / "class_labels.json"
 
-# Cache for model and labels
 _session = None
 _class_labels = None
 _input_name = None
 
-
 def load_model():
-    """Load ONNX model and class labels.
-
-    Returns:
-        tuple: (session, class_labels, input_name)
-    """
     global _session, _class_labels, _input_name
-
     if _session is None:
         sess_options = ort.SessionOptions()
         sess_options.intra_op_num_threads = 4
-
         _session = ort.InferenceSession(
             str(ONNX_MODEL_PATH), sess_options=sess_options, providers=["CPUExecutionProvider"]
         )
-
         _input_name = _session.get_inputs()[0].name
-
         with open(CLASS_LABELS_PATH, "r", encoding="utf-8") as f:
             labels_data = json.load(f)
             _class_labels = labels_data["classes"]
-
     return _session, _class_labels, _input_name
 
-
 def preprocess_image_for_model(image_path: str) -> np.ndarray:
-    """Preprocess image for ONNX model inference.
-
-    Args:
-        image_path: Path to the image file
-
-    Returns:
-        np.ndarray: Preprocessed image tensor (1, 3, 224, 224)
-    """
     img = Image.open(image_path).convert("RGB")
     img = img.resize((224, 224))
-
     img_array = np.array(img, dtype=np.float32) / 255.0
-
     mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
     std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
 

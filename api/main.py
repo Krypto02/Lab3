@@ -1,13 +1,12 @@
+
 import os
 import shutil
 import tempfile
 from pathlib import Path
-
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-
 from logic.image_processor import (
     get_available_classes,
     predict_class,
@@ -20,41 +19,33 @@ app = FastAPI(
     description="API for pet breed image classification and preprocessing",
     version="1.0.0",
 )
-
 templates = Jinja2Templates(directory="templates")
-
 
 class PredictionResponse(BaseModel):
     filename: str
     predicted_breed: str
     confidence: float
 
-
 class ResizeRequest(BaseModel):
     width: int
     height: int
-
 
 class PreprocessRequest(BaseModel):
     normalize: bool = True
     grayscale: bool = False
 
-
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-
 
 @app.get("/api/health")
 async def health_check():
     return {"status": "healthy", "service": "Pet Breed Classification API"}
 
-
 @app.get("/api/classes")
 async def get_classes():
     classes = get_available_classes()
     return {"classes": classes, "count": len(classes)}
-
 
 @app.post("/api/predict", response_model=PredictionResponse)
 async def predict(file: UploadFile = File(...)):
