@@ -14,13 +14,24 @@ RENDER_API_URL = "https://lab3-m64w.onrender.com"
 def get_available_classes():
     """Get available pet breed classes from Render API."""
     try:
-        response = requests.get(f"{RENDER_API_URL}/api/classes", timeout=10)
+        response = requests.get(f"{RENDER_API_URL}/api/classes", timeout=30)
         response.raise_for_status()
         data = response.json()
-        return data.get("classes", [])
+        classes = data.get("classes", [])
+        print(f"Fetched {len(classes)} classes from API")
+        return classes
     except Exception as e:
         print(f"Error fetching classes: {e}")
-        return []
+        return [
+            "Abyssinian", "American Bulldog", "American Pit Bull Terrier", "Basset Hound",
+            "Beagle", "Bengal", "Birman", "Bombay", "Boxer", "British Shorthair",
+            "Chihuahua", "Egyptian Mau", "English Cocker Spaniel", "English Setter",
+            "German Shorthaired", "Great Pyrenees", "Havanese", "Japanese Chin",
+            "Keeshond", "Leonberger", "Maine Coon", "Miniature Pinscher", "Newfoundland",
+            "Persian", "Pomeranian", "Pug", "Ragdoll", "Russian Blue", "Saint Bernard",
+            "Samoyed", "Scottish Terrier", "Shiba Inu", "Siamese", "Sphynx",
+            "Staffordshire Bull Terrier", "Wheaten Terrier", "Yorkshire Terrier"
+        ]
 
 
 def predict_class(image):
@@ -103,7 +114,7 @@ def get_breeds_html():
     """Generate HTML for available breeds."""
     breeds = get_available_classes()
     if not breeds:
-        return '<p style="text-align: center; padding: 1rem;">Loading breeds from API... (may take 30-60s on first load)</p>'
+        return '<p style="text-align: center; padding: 1rem; color: #666;">Could not load breeds. Click Refresh Breeds button.</p>'
     badges = "".join([f'<div class="breed-badge">{breed}</div>' for breed in sorted(breeds)])
     return f'<div class="breeds-grid">{badges}</div>'
 
